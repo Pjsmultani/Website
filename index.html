@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faithquest — IRDAI Licensed Corporate Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0B1D3A;--navy-light:#132B52;--navy-mid:#0E2445;
+  --gold:#C9A54E;--gold-light:#E8D5A0;--gold-dark:#A8883D;
+  --cream:#FAF7F0;--cream-dark:#F0EBE0;--white:#FFFFFF;
+  --text-dark:#1A1A2E;--text-muted:#5A6078;--text-light:#8A90A8;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans','Helvetica Neue',sans-serif;
+  --ease:cubic-bezier(.23,1,.32,1);
+  --radius:20px;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--sans);color:var(--text-dark);background:var(--cream);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none}
+.container{max-width:1200px;margin:0 auto;padding:0 32px}
+.section-label{font-family:var(--sans);font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.section-label::before{content:'';width:28px;height:1.5px;background:var(--gold)}
+.section-title{font-family:var(--serif);font-size:clamp(2rem,4.5vw,3.4rem);font-weight:600;line-height:1.15;color:var(--navy);margin-bottom:16px}
+.section-subtitle{font-size:1.05rem;color:var(--text-muted);line-height:1.7;max-width:560px}
+.centered{text-align:center}.centered .section-label{justify-content:center}.centered .section-label::before{display:none}.centered .section-subtitle{margin:0 auto}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}.reveal-delay-2{transition-delay:.2s}.reveal-delay-3{transition-delay:.3s}.reveal-delay-4{transition-delay:.4s}
+
+.btn-primary{background:var(--gold);color:var(--navy);padding:14px 32px;border-radius:100px;font-weight:600;font-size:.88rem;letter-spacing:.03em;transition:all .35s var(--ease);display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font-family:var(--sans)}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,165,78,.25)}
+.btn-primary svg{width:16px;height:16px;transition:transform .3s}.btn-primary:hover svg{transform:translateX(3px)}
+.btn-secondary{background:transparent;color:var(--white);padding:14px 32px;border-radius:100px;font-weight:500;font-size:.88rem;border:1.5px solid rgba(255,255,255,.2);transition:all .35s var(--ease);display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);cursor:pointer}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.btn-outline{background:transparent;color:var(--navy);padding:14px 32px;border-radius:100px;font-weight:600;font-size:.88rem;border:1.5px solid rgba(11,29,58,.15);transition:all .35s var(--ease);display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-family:var(--sans)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ─── NAVBAR ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 0;transition:all .4s var(--ease)}
+nav.scrolled{background:rgba(11,29,58,.97);backdrop-filter:blur(20px);padding:14px 0;box-shadow:0 4px 30px rgba(0,0,0,.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo-icon{width:38px;height:38px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.logo-icon::after{content:'F';font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--gold)}
+.logo-text{font-family:var(--serif);font-size:1.4rem;font-weight:600;color:var(--white);letter-spacing:.02em}
+.logo-text span{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a,.nav-links .nav-drop-btn{color:rgba(255,255,255,.75);font-size:.82rem;font-weight:500;letter-spacing:.04em;transition:color .3s;cursor:pointer;background:none;border:none;font-family:var(--sans);display:flex;align-items:center;gap:4px}
+.nav-links a:hover,.nav-links .nav-drop-btn:hover{color:var(--gold)}
+.nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:10px 24px!important;border-radius:100px!important;font-weight:600!important;transition:all .3s var(--ease)!important}
+.nav-cta:hover{background:var(--gold-light)!important;transform:translateY(-1px);box-shadow:0 4px 20px rgba(201,165,78,.3)}
+.nav-dropdown{position:relative}
+.nav-drop-menu{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(8px);background:var(--white);border-radius:16px;padding:12px;min-width:220px;box-shadow:0 20px 60px rgba(0,0,0,.15);opacity:0;visibility:hidden;transition:all .3s var(--ease);z-index:100}
+.nav-dropdown:hover .nav-drop-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.nav-drop-menu a{color:var(--navy)!important;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;font-size:.82rem;transition:all .2s}
+.nav-drop-menu a:hover{background:var(--cream);color:var(--gold)!important}
+.nav-drop-menu a svg{width:18px;height:18px;color:var(--gold);flex-shrink:0}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--white);transition:all .3s}
+.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(11,29,58,.98);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--white);font-family:var(--serif);font-size:1.5rem;font-weight:500;padding:8px 0;transition:color .3s;cursor:pointer}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-close{position:absolute;top:24px;right:32px;background:none;border:none;color:var(--white);font-size:1.8rem;cursor:pointer}
+
+.page-view{display:none;opacity:0;transition:opacity .4s var(--ease)}
+.page-view.active{display:block;opacity:1}
+
+/* ─── HERO ─── */
+.hero{min-height:100vh;background:var(--navy);position:relative;display:flex;align-items:center;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 40%,rgba(201,165,78,.08) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 20% 80%,rgba(19,43,82,.6) 0%,transparent 70%);z-index:1}
+.hero::after{content:'';position:absolute;top:-20%;right:-10%;width:600px;height:600px;border:1px solid rgba(201,165,78,.06);border-radius:50%;animation:pulse 6s ease-in-out infinite}
+.hero-grain{position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.5;z-index:1}
+.hero-content{position:relative;z-index:2;padding:140px 0 100px;width:100%}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,165,78,.1);border:1px solid rgba(201,165,78,.2);padding:8px 16px;border-radius:100px;margin-bottom:28px;animation:fadeUp .8s var(--ease) .2s both}
+.hero-badge-dot{width:6px;height:6px;background:var(--gold);border-radius:50%}
+.hero-badge span{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.hero h1{font-family:var(--serif);font-size:clamp(2.6rem,5.5vw,4.2rem);font-weight:600;color:var(--white);line-height:1.1;margin-bottom:24px;animation:fadeUp .8s var(--ease) .35s both}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-desc{font-size:1.05rem;color:rgba(255,255,255,.55);line-height:1.8;max-width:480px;margin-bottom:40px;animation:fadeUp .8s var(--ease) .5s both}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;animation:fadeUp .8s var(--ease) .65s both}
+.hero-visual{position:relative;animation:fadeIn 1.2s var(--ease) .5s both}
+.hero-card{background:rgba(255,255,255,.04);backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:40px;position:relative}
+.hero-card::before{content:'';position:absolute;top:-1px;left:40px;right:40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px}
+.hero-stat{text-align:center;padding:20px;background:rgba(255,255,255,.03);border-radius:16px;border:1px solid rgba(255,255,255,.05)}
+.hero-stat-num{font-family:var(--serif);font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1}
+.hero-stat-label{font-size:.72rem;color:rgba(255,255,255,.45);margin-top:8px;letter-spacing:.08em;text-transform:uppercase}
+.hero-partners{display:flex;flex-direction:column;gap:12px}
+.hero-partners-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.partner-logos{display:flex;gap:12px;flex-wrap:wrap}
+.partner-pill{padding:8px 16px;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:.75rem;color:rgba(255,255,255,.5);font-weight:500}
+
+.trust-bar{background:var(--white);border-bottom:1px solid rgba(0,0,0,.04);padding:28px 0}
+.trust-inner{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:10px;color:var(--text-muted);font-size:.82rem;font-weight:500}
+.trust-icon{width:20px;height:20px;color:var(--gold)}
+
+.card-grid{display:grid;gap:24px}
+.card-grid.cols-4{grid-template-columns:repeat(4,1fr)}.card-grid.cols-3{grid-template-columns:repeat(3,1fr)}.card-grid.cols-2{grid-template-columns:repeat(2,1fr)}
+
+.product-card{padding:36px 28px;border-radius:var(--radius);border:1px solid rgba(0,0,0,.06);background:var(--cream);position:relative;overflow:hidden;transition:all .45s var(--ease);cursor:pointer}
+.product-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(11,29,58,.08);border-color:rgba(201,165,78,.2)}
+.product-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transition:transform .4s var(--ease);transform-origin:left}
+.product-card:hover::before{transform:scaleX(1)}
+.product-icon{width:52px;height:52px;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:all .4s var(--ease)}
+.product-card:hover .product-icon{background:linear-gradient(135deg,var(--gold),#D4AF5A);transform:scale(1.05)}
+.product-icon svg{width:24px;height:24px;color:var(--gold);transition:color .4s}
+.product-card:hover .product-icon svg{color:var(--navy)}
+.product-card h3{font-family:var(--serif);font-size:1.3rem;font-weight:600;color:var(--navy);margin-bottom:10px}
+.product-card p{font-size:.84rem;color:var(--text-muted);line-height:1.7;margin-bottom:20px}
+.product-link{font-size:.78rem;font-weight:600;color:var(--gold);letter-spacing:.04em;display:inline-flex;align-items:center;gap:6px;transition:gap .3s}
+.product-card:hover .product-link{gap:10px}
+
+.dark-section{background:var(--navy);position:relative;overflow:hidden}
+.dark-section::before{content:'';position:absolute;top:50%;left:50%;width:800px;height:800px;transform:translate(-50%,-50%);border:1px solid rgba(201,165,78,.04);border-radius:50%}
+.dark-section .section-title{color:var(--white)}.dark-section .section-subtitle{color:rgba(255,255,255,.5)}
+.why-card{padding:36px;border-radius:var(--radius);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(10px);transition:all .4s var(--ease)}
+.why-card:hover{background:rgba(255,255,255,.06);border-color:rgba(201,165,78,.2);transform:translateY(-4px)}
+.why-num{font-family:var(--serif);font-size:2.4rem;font-weight:700;color:var(--gold);opacity:.3;margin-bottom:16px}
+.why-card h3{font-family:var(--serif);font-size:1.2rem;font-weight:600;color:var(--white);margin-bottom:10px}
+.why-card p{font-size:.84rem;color:rgba(255,255,255,.45);line-height:1.75}
+
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.process-steps::before{content:'';position:absolute;top:36px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));opacity:.2}
+.step{text-align:center;padding:0 20px;position:relative}
+.step-num{width:72px;height:72px;margin:0 auto 24px;border-radius:50%;background:var(--white);border:2px solid rgba(201,165,78,.2);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--gold);position:relative;z-index:2;transition:all .4s var(--ease)}
+.step:hover .step-num{background:var(--gold);color:var(--navy);border-color:var(--gold);transform:scale(1.08);box-shadow:0 8px 30px rgba(201,165,78,.25)}
+.step h4{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:var(--navy);margin-bottom:8px}
+.step p{font-size:.82rem;color:var(--text-muted);line-height:1.7}
+
+.test-card{padding:36px;border-radius:var(--radius);background:var(--cream);border:1px solid rgba(0,0,0,.04);transition:all .4s var(--ease)}
+.test-card:hover{transform:translateY(-4px);box-shadow:0 16px 50px rgba(11,29,58,.06)}
+.test-quote{font-size:2.4rem;color:var(--gold);font-family:var(--serif);line-height:1;margin-bottom:12px;opacity:.5}
+.test-text{font-size:.92rem;color:var(--text-muted);line-height:1.8;margin-bottom:24px;font-style:italic}
+.test-author{display:flex;align-items:center;gap:12px}
+.test-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy-light));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.9rem;font-weight:700;color:var(--gold)}
+.test-info h5{font-size:.85rem;font-weight:600;color:var(--navy)}.test-info span{font-size:.72rem;color:var(--text-light)}
+.test-stars{display:flex;gap:2px;margin-bottom:16px}.test-stars svg{width:14px;height:14px;color:var(--gold);fill:var(--gold)}
+
+.cta-section{padding:100px 0;background:var(--navy);position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 50% 50%,rgba(201,165,78,.06) 0%,transparent 70%)}
+.cta-inner{text-align:center;max-width:650px;margin:0 auto;position:relative;z-index:2}
+.cta-inner h2{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:600;color:var(--white);line-height:1.15;margin-bottom:20px}
+.cta-inner h2 em{font-style:italic;color:var(--gold)}
+.cta-inner>p{color:rgba(255,255,255,.5);line-height:1.8;margin-bottom:40px}
+.cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.cta-phone{display:flex;align-items:center;gap:8px;color:var(--gold);font-size:1rem;font-weight:600;margin-top:32px;justify-content:center}
+.cta-phone svg{width:18px;height:18px}
+
+.page-header{background:var(--navy);padding:140px 0 80px;position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 60% 40%,rgba(201,165,78,.06),transparent 70%)}
+.page-header .container{position:relative;z-index:2}
+.page-breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.page-breadcrumb a{color:rgba(255,255,255,.4);font-size:.78rem;font-weight:500;transition:color .3s;cursor:pointer}
+.page-breadcrumb a:hover{color:var(--gold)}
+.page-breadcrumb span{color:rgba(255,255,255,.25);font-size:.78rem}
+.page-breadcrumb .current{color:var(--gold);font-size:.78rem;font-weight:500}
+.page-header h1{font-family:var(--serif);font-size:clamp(2.4rem,5vw,3.6rem);font-weight:600;color:var(--white);line-height:1.1;margin-bottom:16px}
+.page-header h1 em{color:var(--gold);font-style:italic}
+.page-header>p,.page-header .container>p{color:rgba(255,255,255,.5);font-size:1.05rem;line-height:1.8;max-width:600px}
+
+.product-detail{padding:80px 0}
+.pd-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:start}
+.pd-content h2{font-family:var(--serif);font-size:1.8rem;font-weight:600;color:var(--navy);margin-bottom:16px;margin-top:40px}
+.pd-content h2:first-child{margin-top:0}
+.pd-content p{color:var(--text-muted);line-height:1.85;margin-bottom:16px;font-size:.95rem}
+.pd-content ul{list-style:none;margin:16px 0 24px}
+.pd-content li{padding:10px 0;padding-left:28px;position:relative;color:var(--text-muted);font-size:.92rem;line-height:1.6;border-bottom:1px solid rgba(0,0,0,.04)}
+.pd-content li::before{content:'';position:absolute;left:0;top:16px;width:12px;height:12px;border:2px solid var(--gold);border-radius:50%}
+.pd-sidebar{position:sticky;top:100px}
+.pd-quote-box{background:var(--navy);border-radius:var(--radius);padding:36px;color:var(--white)}
+.pd-quote-box h3{font-family:var(--serif);font-size:1.4rem;font-weight:600;margin-bottom:8px}
+.pd-quote-box p{color:rgba(255,255,255,.5);font-size:.88rem;line-height:1.7;margin-bottom:24px}
+.pd-partners{background:var(--white);border:1px solid rgba(0,0,0,.06);border-radius:var(--radius);padding:28px;margin-top:20px}
+.pd-partners h4{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:16px}
+.pd-partners .partner-pills{display:flex;flex-wrap:wrap;gap:8px}
+.pd-partners .pp{padding:8px 14px;border-radius:100px;background:var(--cream);font-size:.76rem;font-weight:500;color:var(--navy);border:1px solid rgba(0,0,0,.04)}
+.pd-features-box{background:var(--cream);border-radius:var(--radius);padding:28px;margin-top:20px}
+.pd-features-box h4{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:16px}
+.pd-feat-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+.pd-feat-item svg{width:16px;height:16px;color:var(--gold);flex-shrink:0;margin-top:3px}
+.pd-feat-item span{font-size:.84rem;color:var(--text-muted);line-height:1.5}
+
+.about-page-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding:80px 0}
+.about-page-img{aspect-ratio:1;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:var(--radius);display:flex;align-items:center;justify-content:center}
+.about-page-img svg{width:120px;height:120px}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:0 0 80px}
+.value-card{padding:32px;background:var(--white);border-radius:var(--radius);border:1px solid rgba(0,0,0,.04);text-align:center;transition:all .4s var(--ease)}
+.value-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
+.value-card .v-icon{width:56px;height:56px;margin:0 auto 16px;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:14px;display:flex;align-items:center;justify-content:center}
+.value-card .v-icon svg{width:24px;height:24px;color:var(--gold)}
+.value-card h3{font-family:var(--serif);font-size:1.2rem;font-weight:600;color:var(--navy);margin-bottom:8px}
+.value-card p{font-size:.84rem;color:var(--text-muted);line-height:1.7}
+.team-section{padding:80px 0;background:var(--cream)}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px}
+.team-card{text-align:center}
+.team-avatar{width:100px;height:100px;margin:0 auto 16px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy-light));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--gold);border:3px solid var(--cream);box-shadow:0 8px 30px rgba(0,0,0,.08)}
+.team-card h4{font-family:var(--serif);font-size:1.05rem;font-weight:600;color:var(--navy)}
+.team-card span{font-size:.78rem;color:var(--text-muted)}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;padding:80px 0}
+.contact-info-card{padding:32px;background:var(--white);border-radius:var(--radius);border:1px solid rgba(0,0,0,.04);margin-bottom:20px;display:flex;gap:16px;align-items:flex-start}
+.contact-info-card .ci-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.contact-info-card .ci-icon svg{width:20px;height:20px;color:var(--gold)}
+.contact-info-card h4{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:4px}
+.contact-info-card p{font-size:.88rem;color:var(--text-muted);line-height:1.6}
+.contact-form{background:var(--white);border-radius:var(--radius);padding:40px;border:1px solid rgba(0,0,0,.04)}
+.contact-form h3{font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--navy);margin-bottom:24px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:.82rem;font-weight:600;color:var(--navy);margin-bottom:8px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:14px 18px;border:1.5px solid rgba(0,0,0,.08);border-radius:12px;font-family:var(--sans);font-size:.9rem;color:var(--text-dark);background:var(--cream);transition:all .3s;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,165,78,.1)}
+.form-group input.invalid,.form-group select.invalid,.form-group textarea.invalid{border-color:#d44;box-shadow:0 0 0 3px rgba(221,68,68,.08)}
+.form-group textarea{min-height:120px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+.claims-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:80px 0}
+.claim-step{padding:36px;background:var(--white);border-radius:var(--radius);border:1px solid rgba(0,0,0,.04);text-align:center;transition:all .4s var(--ease)}
+.claim-step:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
+.claim-step .cs-num{font-family:var(--serif);font-size:2.4rem;font-weight:700;color:var(--gold);opacity:.4;margin-bottom:12px}
+.claim-step h3{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:var(--navy);margin-bottom:8px}
+.claim-step p{font-size:.84rem;color:var(--text-muted);line-height:1.7}
+.claims-faq{padding:0 0 80px}
+.faq-item{border:1px solid rgba(0,0,0,.06);border-radius:14px;margin-bottom:12px;overflow:hidden;background:var(--white)}
+.faq-question{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;font-size:.92rem;color:var(--navy);transition:all .3s}
+.faq-question:hover{color:var(--gold)}
+.faq-question svg{width:20px;height:20px;transition:transform .3s;flex-shrink:0;color:var(--gold)}
+.faq-item.open .faq-question svg{transform:rotate(180deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .4s var(--ease)}
+.faq-item.open .faq-answer{max-height:300px}
+.faq-answer p{padding:0 24px 20px;font-size:.88rem;color:var(--text-muted);line-height:1.8}
+
+footer{background:var(--navy);border-top:1px solid rgba(255,255,255,.06);padding:64px 0 32px}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-brand p{color:rgba(255,255,255,.4);font-size:.84rem;line-height:1.8;margin-top:16px;max-width:280px}
+.footer-col h4{font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--white);margin-bottom:20px}
+.footer-col ul{list-style:none}.footer-col li{margin-bottom:10px}
+.footer-col a{color:rgba(255,255,255,.4);font-size:.84rem;transition:color .3s;cursor:pointer}
+.footer-col a:hover{color:var(--gold)}
+.footer-irdai{display:inline-flex;align-items:center;gap:8px;background:rgba(201,165,78,.08);border:1px solid rgba(201,165,78,.15);padding:10px 16px;border-radius:10px;margin-top:20px}
+.footer-irdai svg{width:16px;height:16px;color:var(--gold)}
+.footer-irdai span{font-size:.72rem;color:var(--gold-light);letter-spacing:.04em}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:32px;border-top:1px solid rgba(255,255,255,.06)}
+.footer-bottom p{color:rgba(255,255,255,.3);font-size:.78rem}
+.footer-bottom-links{display:flex;gap:24px}
+.footer-bottom-links a{color:rgba(255,255,255,.3);font-size:.78rem;transition:color .3s;cursor:pointer}
+.footer-bottom-links a:hover{color:var(--gold)}
+.disclaimer{background:#080F1E;padding:16px 32px;text-align:center}
+.disclaimer p{font-size:.68rem;color:rgba(255,255,255,.25);line-height:1.7;max-width:900px;margin:0 auto}
+.disclaimer strong{color:rgba(255,255,255,.35)}
+
+@media(max-width:1024px){
+  .hero-grid,.about-page-grid,.pd-grid,.contact-grid{grid-template-columns:1fr}
+  .hero-grid{text-align:center}.hero-desc{margin:0 auto 40px}.hero-actions{justify-content:center}
+  .hero-visual{max-width:500px;margin:40px auto 0}
+  .card-grid.cols-4{grid-template-columns:repeat(2,1fr)}
+  .values-grid,.claims-steps{grid-template-columns:repeat(2,1fr)}
+  .team-grid{grid-template-columns:repeat(2,1fr)}
+  .process-steps{grid-template-columns:repeat(2,1fr);gap:32px}
+  .process-steps::before{display:none}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none!important}.hamburger{display:flex}
+  .card-grid.cols-4,.card-grid.cols-3,.card-grid.cols-2{grid-template-columns:1fr}
+  .values-grid,.claims-steps{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr 1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:16px;text-align:center}
+  .process-steps{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .pd-sidebar{position:static}
+  .page-header h1{font-size:2rem}
+}
+@media(max-width:480px){.container{padding:0 20px}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar"><div class="container nav-inner">
+  <a class="logo" onclick="navigate('home')"><div class="logo-icon"></div><div class="logo-text">Faith<span>quest</span></div></a>
+  <ul class="nav-links">
+    <li><a onclick="navigate('about')">About</a></li>
+    <li class="nav-dropdown">
+      <span class="nav-drop-btn">Products <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+      <div class="nav-drop-menu">
+        <a onclick="navigate('life-insurance')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg> Life Insurance</a>
+        <a onclick="navigate('health-insurance')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> Health Insurance</a>
+        <a onclick="navigate('motor-insurance')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375"/></svg> Motor Insurance</a>
+        <a onclick="navigate('business-insurance')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21"/></svg> Business Insurance</a>
+        <a onclick="navigate('travel-insurance')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3"/></svg> Travel Insurance</a>
+        <a onclick="navigate('home-insurance')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955a1.126 1.126 0 0 1 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875"/></svg> Home Insurance</a>
+      </div>
+    </li>
+    <li><a onclick="navigate('claims')">Claims</a></li>
+    <li><a onclick="navigate('contact')">Contact</a></li>
+    <li><a onclick="navigate('contact')" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Menu"><span></span><span></span><span></span></button>
+</div></nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMobile()">&times;</button>
+  <a onclick="navigate('home');toggleMobile()">Home</a>
+  <a onclick="navigate('about');toggleMobile()">About</a>
+  <a onclick="navigate('life-insurance');toggleMobile()">Life Insurance</a>
+  <a onclick="navigate('health-insurance');toggleMobile()">Health Insurance</a>
+  <a onclick="navigate('motor-insurance');toggleMobile()">Motor Insurance</a>
+  <a onclick="navigate('business-insurance');toggleMobile()">Business Insurance</a>
+  <a onclick="navigate('travel-insurance');toggleMobile()">Travel Insurance</a>
+  <a onclick="navigate('home-insurance');toggleMobile()">Home Insurance</a>
+  <a onclick="navigate('claims');toggleMobile()">Claims</a>
+  <a onclick="navigate('contact');toggleMobile()">Contact</a>
+</div>
+
+<!-- ══════ HOME ══════ -->
+<div class="page-view active" id="page-home">
+<section class="hero"><div class="hero-grain"></div><div class="container hero-content"><div class="hero-grid">
+  <div>
+    <div class="hero-badge"><div class="hero-badge-dot"></div><span>IRDAI Licensed Corporate Agency</span></div>
+    <h1>Protect What Matters.<br>Build What <em>Lasts.</em></h1>
+    <p class="hero-desc">Faithquest is your trusted IRDAI-licensed corporate agency, offering curated insurance solutions across life, health, and general insurance — backed by India's most respected insurers.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" onclick="navigate('contact')">Start Your Journey <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></a>
+      <a class="btn-secondary" onclick="navigate('life-insurance')">Explore Products</a>
+    </div>
+  </div>
+  <div class="hero-visual"><div class="hero-card">
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">₹500Cr+</div><div class="hero-stat-label">Sum Insured</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">15K+</div><div class="hero-stat-label">Families Covered</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">98%</div><div class="hero-stat-label">Claim Support Rate</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Insurance Verticals</div></div>
+    </div>
+    <div class="hero-partners"><div class="hero-partners-label">Insurer Partners</div>
+      <div class="partner-logos"><span class="partner-pill">HDFC Life</span><span class="partner-pill">ICICI Lombard</span><span class="partner-pill">Star Health</span><span class="partner-pill">Bajaj Allianz</span><span class="partner-pill">Tata AIG</span></div>
+    </div>
+  </div></div>
+</div></div></section>
+
+<section class="trust-bar"><div class="container"><div class="trust-inner">
+  <div class="trust-item"><svg class="trust-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg> IRDAI Registered</div>
+  <div class="trust-item"><svg class="trust-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21"/></svg> Composite License</div>
+  <div class="trust-item"><svg class="trust-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72"/></svg> Multi-Insurer Tie-Ups</div>
+  <div class="trust-item"><svg class="trust-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg> Dedicated Claims Support</div>
+  <div class="trust-item"><svg class="trust-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 0 1 15 0Z"/></svg> PAN India Presence</div>
+</div></div></section>
+
+<section style="padding:100px 0;background:var(--white)" id="home-products"><div class="container">
+  <div class="centered" style="max-width:600px;margin:0 auto 64px">
+    <div class="section-label reveal">Insurance Solutions</div>
+    <h2 class="section-title reveal reveal-delay-1">Comprehensive Protection<br>for Every Need</h2>
+    <p class="section-subtitle reveal reveal-delay-2">From safeguarding your family's future to protecting business assets — our curated product suite covers every dimension of risk.</p>
+  </div>
+  <div class="card-grid cols-3" id="homeProductGrid"></div>
+</div></section>
+
+<section class="dark-section" style="padding:100px 0"><div class="container">
+  <div class="centered" style="max-width:600px;margin:0 auto 64px;position:relative;z-index:2">
+    <div class="section-label reveal">The Faithquest Advantage</div>
+    <h2 class="section-title reveal reveal-delay-1">Why Thousands Trust<br>Faithquest</h2>
+    <p class="section-subtitle reveal reveal-delay-2">We go beyond policy distribution — we serve as your lifelong insurance partner.</p>
+  </div>
+  <div class="card-grid cols-3" style="position:relative;z-index:2">
+    <div class="why-card reveal"><div class="why-num">01</div><h3>Unbiased Advisory</h3><p>With partnerships across multiple insurers, we recommend what's right for you — not what pays the highest commission.</p></div>
+    <div class="why-card reveal reveal-delay-1"><div class="why-num">02</div><h3>IRDAI Compliance</h3><p>Every transaction fully compliant with IRDAI corporate agency regulations. Your trust is protected by law.</p></div>
+    <div class="why-card reveal reveal-delay-2"><div class="why-num">03</div><h3>Claims Advocacy</h3><p>Our dedicated claims team stands beside you — coordinating with insurers and fighting for swift settlements.</p></div>
+    <div class="why-card reveal reveal-delay-3"><div class="why-num">04</div><h3>Certified Experts</h3><p>Our team holds certifications from the Insurance Institute of India with continuous product training.</p></div>
+    <div class="why-card reveal reveal-delay-4"><div class="why-num">05</div><h3>Digital-First Experience</h3><p>Instant quotes, digital policy issuance, e-KYC — modern convenience in every interaction.</p></div>
+    <div class="why-card reveal"><div class="why-num">06</div><h3>Lifetime Relationship</h3><p>Annual reviews, renewal reminders, portfolio rebalancing — we stay invested in your needs.</p></div>
+  </div>
+</div></section>
+
+<section style="padding:100px 0;background:var(--cream)"><div class="container">
+  <div class="centered" style="max-width:600px;margin:0 auto 64px">
+    <div class="section-label reveal">Simple Process</div>
+    <h2 class="section-title reveal reveal-delay-1">Your Journey to<br>Complete Protection</h2>
+  </div>
+  <div class="process-steps">
+    <div class="step reveal"><div class="step-num">1</div><h4>Share Your Needs</h4><p>Tell us about your family, health, assets, and financial goals.</p></div>
+    <div class="step reveal reveal-delay-1"><div class="step-num">2</div><h4>Get Expert Advice</h4><p>Our certified advisors compare plans across insurers for best fit.</p></div>
+    <div class="step reveal reveal-delay-2"><div class="step-num">3</div><h4>Seamless Issuance</h4><p>e-KYC, digital documentation, policy issued from the insurer.</p></div>
+    <div class="step reveal reveal-delay-3"><div class="step-num">4</div><h4>Ongoing Support</h4><p>Renewals, claims, reviews — we're with you for the long haul.</p></div>
+  </div>
+</div></section>
+
+<section style="padding:100px 0;background:var(--white)"><div class="container">
+  <div class="centered" style="max-width:600px;margin:0 auto 64px">
+    <div class="section-label reveal">Client Stories</div>
+    <h2 class="section-title reveal reveal-delay-1">Trusted by Families<br>Across India</h2>
+  </div>
+  <div class="card-grid cols-3" id="testimonialsGrid"></div>
+</div></section>
+
+<section class="cta-section"><div class="container"><div class="cta-inner reveal">
+  <div class="section-label" style="justify-content:center;color:var(--gold)"><span style="width:28px;height:1.5px;background:var(--gold);display:inline-block"></span> Ready to Begin?</div>
+  <h2>Your Quest for the Right Coverage <em>Starts Here</em></h2>
+  <p>Connect with a Faithquest advisor today. Free quote, no obligations.</p>
+  <div class="cta-actions">
+    <a class="btn-primary" onclick="navigate('contact')">Get a Free Quote <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></a>
+    <a class="btn-secondary" onclick="navigate('contact')">Schedule a Call</a>
+  </div>
+  <div class="cta-phone"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg> +91 98XX XXX XXX</div>
+</div></div></section>
+</div>
+
+<!-- ══════ ABOUT ══════ -->
+<div class="page-view" id="page-about">
+  <div class="page-header"><div class="container">
+    <div class="page-breadcrumb"><a onclick="navigate('home')">Home</a><span>›</span><span class="current">About Us</span></div>
+    <h1>Built on <em>Trust.</em><br>Driven by Purpose.</h1>
+    <p>Faithquest was founded to bridge the gap between India's growing insurance needs and the right protection — with integrity at every step.</p>
+  </div></div>
+  <div class="container">
+    <div class="about-page-grid">
+      <div>
+        <div class="section-label">Our Story</div>
+        <h2 class="section-title">From Vision to India's<br>Trusted Insurance Partner</h2>
+        <p style="color:var(--text-muted);line-height:1.85;margin-bottom:16px">Faithquest was born from the belief that every Indian family and business deserves unbiased, expert insurance guidance. As an IRDAI-licensed composite corporate agency, we represent leading life, health, and general insurers — offering curated solutions that put your needs first.</p>
+        <p style="color:var(--text-muted);line-height:1.85;margin-bottom:16px">Our team of IRDAI-certified professionals brings decades of experience in underwriting, claims management, and financial planning. We don't just sell policies — we build long-term relationships anchored in transparency and trust.</p>
+        <p style="color:var(--text-muted);line-height:1.85">With a composite license, we can serve you across life, health, and general insurance under one roof — ensuring holistic protection that evolves with your life.</p>
+      </div>
+      <div class="about-page-img"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40 8L12 22V38C12 56.36 24.16 73.28 40 78C55.84 73.28 68 56.36 68 38V22L40 8Z" stroke="#C9A54E" stroke-width="2"/><path d="M40 18L20 28V40C20 53.6 28.8 66.16 40 70C51.2 66.16 60 53.6 60 40V28L40 18Z" stroke="#C9A54E" stroke-width="1" fill="rgba(201,165,78,0.05)"/><path d="M35 40L38 43L46 35" stroke="#C9A54E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="centered" style="max-width:600px;margin:0 auto 48px"><div class="section-label">Our Values</div><h2 class="section-title">What We Stand For</h2></div>
+    <div class="values-grid">
+      <div class="value-card"><div class="v-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg></div><h3>Integrity</h3><p>We recommend what's right for you, not what pays us the most. Unbiased advisory is our promise.</p></div>
+      <div class="value-card"><div class="v-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719"/></svg></div><h3>People First</h3><p>Every client is a relationship, not a transaction. We invest time to understand your unique situation.</p></div>
+      <div class="value-card"><div class="v-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg></div><h3>Innovation</h3><p>Digital-first processes, e-KYC, instant quotes — modern technology meets traditional insurance.</p></div>
+    </div>
+  </div>
+  <div class="team-section"><div class="container">
+    <div class="centered"><div class="section-label">Leadership</div><h2 class="section-title">Meet Our Team</h2></div>
+    <div class="team-grid">
+      <div class="team-card"><div class="team-avatar">VG</div><h4>Vikram Gupta</h4><span>Founder & CEO</span></div>
+      <div class="team-card"><div class="team-avatar">NS</div><h4>Neha Sharma</h4><span>Chief Operating Officer</span></div>
+      <div class="team-card"><div class="team-avatar">RJ</div><h4>Rajesh Jain</h4><span>Head — Claims & Servicing</span></div>
+      <div class="team-card"><div class="team-avatar">AM</div><h4>Anita Menon</h4><span>Principal Officer (IRDAI)</span></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- ══════ CONTACT ══════ -->
+<div class="page-view" id="page-contact">
+  <div class="page-header"><div class="container">
+    <div class="page-breadcrumb"><a onclick="navigate('home')">Home</a><span>›</span><span class="current">Contact Us</span></div>
+    <h1>Let's Talk About<br>Your <em>Protection</em></h1>
+    <p>Whether you need a quote, have a claims question, or want expert advice — our team is here.</p>
+  </div></div>
+  <div class="container"><div class="contact-grid">
+    <div>
+      <div class="contact-info-card"><div class="ci-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg></div><div><h4>Phone</h4><p>+91 98XX XXX XXX<br>Mon–Sat, 9 AM – 7 PM</p></div></div>
+      <div class="contact-info-card"><div class="ci-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg></div><div><h4>Email</h4><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="96fef3fafaf9d6f0f7ffe2fee7e3f3e5e2b8fff8">[email&#160;protected]</a><br><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6c0f000d05011f2c0a0d0518041d19091f18420502">[email&#160;protected]</a></p></div></div>
+      <div class="contact-info-card"><div class="ci-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 0 1 15 0Z"/></svg></div><div><h4>Office</h4><p>Faithquest Insurance Services Pvt. Ltd.<br>New Delhi, India</p></div></div>
+      <div class="contact-info-card"><div class="ci-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></div><div><h4>Working Hours</h4><p>Monday – Saturday<br>9:00 AM – 7:00 PM IST</p></div></div>
+    </div>
+    <div class="contact-form" id="contactFormWrapper">
+      <h3>Get a Free Quote</h3>
+      <div id="formSuccess" style="display:none;text-align:center;padding:40px 20px">
+        <div style="width:64px;height:64px;background:linear-gradient(135deg,var(--gold),#D4AF5A);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="var(--navy)"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg></div>
+        <h3 style="font-family:var(--serif);font-size:1.5rem;color:var(--navy);margin-bottom:8px">Enquiry Sent!</h3>
+        <p style="color:var(--text-muted);font-size:.92rem;line-height:1.7;margin-bottom:24px">Thank you for reaching out. Our team at Faithquest will contact you within 24 hours.</p>
+        <button class="btn-outline" onclick="resetForm()">Submit Another Enquiry</button>
+      </div>
+      <div id="formFields">
+        <div class="form-row"><div class="form-group"><label>Full Name <span style="color:#d44">*</span></label><input type="text" id="fName" placeholder="Your name" required></div><div class="form-group"><label>Phone Number <span style="color:#d44">*</span></label><input type="tel" id="fPhone" placeholder="+91 XXXXX XXXXX" required></div></div>
+        <div class="form-group"><label>Email Address <span style="color:#d44">*</span></label><input type="email" id="fEmail" placeholder="your@email.com" required></div>
+        <div class="form-row"><div class="form-group"><label>Insurance Type <span style="color:#d44">*</span></label><select id="fType" required><option value="">Select a product</option><option>Life Insurance</option><option>Health Insurance</option><option>Motor Insurance</option><option>Business Insurance</option><option>Travel Insurance</option><option>Home Insurance</option></select></div><div class="form-group"><label>City</label><input type="text" id="fCity" placeholder="Your city"></div></div>
+        <div class="form-group"><label>Message</label><textarea id="fMessage" placeholder="Tell us about your insurance needs..."></textarea></div>
+        <div id="formError" style="display:none;color:#d44;font-size:.82rem;margin-bottom:12px;padding:10px 14px;background:rgba(221,68,68,.06);border-radius:10px">Please fill in all required fields.</div>
+        <div style="margin-top:8px"><button class="btn-primary" onclick="submitForm()">Submit Enquiry <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></button></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- ══════ CLAIMS ══════ -->
+<div class="page-view" id="page-claims">
+  <div class="page-header"><div class="container">
+    <div class="page-breadcrumb"><a onclick="navigate('home')">Home</a><span>›</span><span class="current">Claims Assistance</span></div>
+    <h1>Claims Made <em>Simple.</em><br>Support When It Matters.</h1>
+    <p>Our dedicated claims team guides you through every step — from intimation to settlement.</p>
+  </div></div>
+  <div class="container">
+    <div class="claims-steps">
+      <div class="claim-step"><div class="cs-num">01</div><h3>Intimate the Claim</h3><p>Call us or email <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1c7f707d75716f5c7a7d7568746d69796f68327572">[email&#160;protected]</a>. We register with the insurer immediately.</p></div>
+      <div class="claim-step"><div class="cs-num">02</div><h3>Document Collection</h3><p>We guide you on exact documents needed and help compile the complete dossier.</p></div>
+      <div class="claim-step"><div class="cs-num">03</div><h3>Insurer Coordination</h3><p>Our team follows up with the insurer, tracks status, and resolves queries on your behalf.</p></div>
+      <div class="claim-step"><div class="cs-num">04</div><h3>Surveyor Liaison</h3><p>For property and motor claims, we coordinate with surveyors for fair assessment.</p></div>
+      <div class="claim-step"><div class="cs-num">05</div><h3>Settlement Follow-Up</h3><p>We ensure timely processing and escalate delays, keeping you informed throughout.</p></div>
+      <div class="claim-step"><div class="cs-num">06</div><h3>Post-Claim Support</h3><p>Guidance on policy reinstatement, sum restoration, and future optimization.</p></div>
+    </div>
+    <div class="claims-faq">
+      <div class="centered" style="max-width:600px;margin:0 auto 40px"><div class="section-label">FAQs</div><h2 class="section-title">Common Claims Questions</h2></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-question">How quickly should I intimate a claim? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg></div><div class="faq-answer"><p>Ideally within 24–48 hours. Contact Faithquest immediately and we'll handle the intimation on your behalf.</p></div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-question">What documents do I need for a health insurance claim? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg></div><div class="faq-answer"><p>Typically: hospital discharge summary, bills, prescriptions, investigation reports, KYC documents, and policy copy. We provide a case-specific checklist.</p></div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-question">How long does claim settlement take? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg></div><div class="faq-answer"><p>Cashless claims are settled during hospitalization. Reimbursement takes 15–30 days. We actively follow up to minimize delays.</p></div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-question">Can you help if my claim gets rejected? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg></div><div class="faq-answer"><p>Absolutely. We review rejection reasons, prepare additional documentation, and help file appeals with the insurer or escalate to the Insurance Ombudsman.</p></div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-question">Is there a fee for claims assistance? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg></div><div class="faq-answer"><p>No. Claims assistance is complimentary for all Faithquest policyholders — part of our lifelong insurance partnership.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ PRODUCT DETAIL (dynamic) ══════ -->
+<div class="page-view" id="page-product-detail"></div>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" onclick="navigate('home')"><div class="logo-icon"></div><div class="logo-text">Faith<span>quest</span></div></a>
+        <p>An IRDAI-licensed composite corporate agency dedicated to unbiased, expert insurance solutions across India.</p>
+        <div class="footer-irdai"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg><span>IRDAI Reg. No. CA/XXXX</span></div>
+      </div>
+      <div class="footer-col"><h4>Products</h4><ul>
+        <li><a onclick="navigate('life-insurance')">Life Insurance</a></li><li><a onclick="navigate('health-insurance')">Health Insurance</a></li>
+        <li><a onclick="navigate('motor-insurance')">Motor Insurance</a></li><li><a onclick="navigate('business-insurance')">Business Insurance</a></li>
+        <li><a onclick="navigate('travel-insurance')">Travel Insurance</a></li><li><a onclick="navigate('home-insurance')">Home Insurance</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Company</h4><ul>
+        <li><a onclick="navigate('about')">About Us</a></li><li><a onclick="navigate('about')">Our Team</a></li>
+        <li><a onclick="navigate('contact')">Contact</a></li><li><a onclick="navigate('claims')">Claims</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Support</h4><ul>
+        <li><a onclick="navigate('claims')">Claims Assistance</a></li><li><a onclick="navigate('claims')">Grievance Redressal</a></li>
+        <li><a onclick="navigate('claims')">FAQs</a></li><li><a href="https://igms.irda.gov.in" target="_blank" rel="noopener">IRDAI IGMS Portal</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Faithquest Insurance Services Pvt. Ltd. All rights reserved. | IRDAI Licensed Corporate Agent</p>
+      <div class="footer-bottom-links"><a onclick="navigate('about')">Privacy</a><a onclick="navigate('about')">Terms</a><a onclick="navigate('about')">Disclaimer</a></div>
+    </div>
+  </div>
+</footer>
+<div class="disclaimer"><p><strong>Disclaimer:</strong> Faithquest is an IRDAI-licensed corporate agent (Reg. No. CA/XXXX) and not an insurance company. Insurance is the subject matter of solicitation. IRDAI is not involved in activities like selling insurance policies, announcing bonus or investment of premiums. Visitors are advised to verify all product details on the insurer's website. For complaints, visit igms.irda.gov.in.</p></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const products={
+  'life-insurance':{name:'Life Insurance',icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>',tagline:'Secure your family\'s future with comprehensive life coverage.',heroDesc:'Term plans, endowment policies, ULIPs, child plans, pension solutions, and more — from India\'s leading life insurers.',partners:['HDFC Life','ICICI Prudential','SBI Life','Tata AIA','Max Life','Bajaj Allianz Life'],sections:[{title:'Why Life Insurance?',content:'Life insurance is the cornerstone of financial planning. It ensures your family\'s financial security in your absence — covering home loans, children\'s education, daily expenses, and long-term wealth creation. Under Section 80C, premiums up to ₹1.5 lakh are tax-deductible, and maturity proceeds are tax-free under Section 10(10D).'},{title:'Types of Life Insurance We Offer',list:['Term Insurance — Pure protection at the lowest premiums. Ideal for income replacement.','Endowment Plans — Savings + protection. Guaranteed maturity benefits.','ULIPs — Market-linked investment with insurance cover. Flexible fund switching.','Child Plans — Dedicated plans for education and milestones funding.','Pension Plans — Retirement corpus building with annuity payouts.','Whole Life Plans — Lifelong cover with wealth transfer benefits.','Money-Back Plans — Periodic payouts during the policy term.']},{title:'How Faithquest Helps',content:'Our IRDAI-certified advisors conduct a detailed needs analysis — factoring in your income, liabilities, dependents, and goals. We compare plans across partner insurers to recommend the best fit. From proposal submission to medical coordination and policy issuance, we manage everything.'}],features:['Human Life Value calculation','Premium comparison across insurers','Rider optimization (Critical Illness, Accidental Death)','Tax planning advisory','Nomination & assignment guidance','Annual portfolio reviews']},
+  'health-insurance':{name:'Health Insurance',icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>',tagline:'Protect your health. Protect your savings.',heroDesc:'Individual, family floater, senior citizen, critical illness, and group health plans — with cashless access across 10,000+ network hospitals.',partners:['Star Health','ICICI Lombard','Care Health','HDFC Ergo','Bajaj Allianz','Niva Bupa'],sections:[{title:'Why Health Insurance?',content:'Medical inflation in India runs at 14–15% annually. A single hospitalization can wipe out years of savings. Health insurance provides financial protection against medical emergencies, planned surgeries, daycare procedures, and pre/post hospitalization expenses.'},{title:'Plans We Offer',list:['Individual Health Plans — Dedicated cover for a single person.','Family Floater Plans — One sum insured shared by the entire family.','Senior Citizen Plans — Specialized coverage for ages 60+.','Critical Illness Plans — Lump-sum payout on diagnosis of specified conditions.','Super Top-Up Plans — Affordable high-coverage add-ons above a deductible.','Group Health Insurance — Employee benefits packages for businesses.','Personal Accident Cover — Financial protection against accidental disability or death.']},{title:'The Faithquest Advantage',content:'We help you navigate waiting periods, co-payment clauses, sub-limits, and network hospital restrictions. Our team ensures you choose a plan with the right room rent limits, restoration benefits, and no-claim bonuses — tailored to your family\'s medical history.'}],features:['Cashless hospitalization support','Network hospital directory','Pre-existing disease guidance','Claims documentation checklist','Renewal reminders with NCB tracking','Port-in assistance from other insurers']},
+  'motor-insurance':{name:'Motor Insurance',icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375c-.621 0-1.125-.504-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.125-.504 1.09-1.124a17.9 17.9 0 0 0-3.213-9.193 2.06 2.06 0 0 0-1.58-.86H14.25m2.25 0h-2.25"/>',tagline:'On the road? Stay protected.',heroDesc:'Comprehensive and third-party motor insurance for cars, two-wheelers, and commercial vehicles with instant policy issuance.',partners:['ICICI Lombard','Bajaj Allianz General','HDFC Ergo','Tata AIG','New India Assurance','United India'],sections:[{title:'Why Motor Insurance?',content:'Motor insurance is mandatory under the Motor Vehicles Act, 1988. Beyond compliance, comprehensive motor insurance protects your vehicle against theft, natural calamities, accidents, fire, and includes personal accident cover for the owner-driver.'},{title:'Coverage Options',list:['Third-Party Liability — Mandatory cover for damage to third-party property, injury, or death.','Comprehensive Cover — Own damage + third-party liability in a single policy.','Standalone Own Damage — Covers your vehicle against fire, theft, accident, natural calamity.','Add-On Covers — Zero depreciation, roadside assistance, engine protect, NCB protect, key replacement.','Commercial Vehicle Insurance — Trucks, buses, taxis, fleet coverage.','Two-Wheeler Insurance — Bikes and scooters with quick online issuance.']},{title:'Faithquest Motor Benefits',content:'We help you choose the right IDV, select optimal add-ons, and maximize your No Claim Bonus across renewals. Our 5,000+ cashless garages ensure quick repairs. In case of an accident, we coordinate everything — surveyor appointment to settlement.'}],features:['Instant policy issuance','IDV optimization','No Claim Bonus transfer guidance','5,000+ cashless garages','Accident claim coordination','RC and document verification']},
+  'business-insurance':{name:'Business Insurance',icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21"/>',tagline:'Protect your enterprise. Insure your ambition.',heroDesc:'Fire, marine, liability, professional indemnity, workmen\'s compensation, and property insurance — tailored for SMEs and enterprises.',partners:['ICICI Lombard','Bajaj Allianz General','Tata AIG','New India Assurance','HDFC Ergo','United India'],sections:[{title:'Why Business Insurance?',content:'Every business faces risks — from fire and theft to lawsuits and employee injuries. Business insurance provides a safety net protecting your assets, operations, and people. It ensures business continuity and protects years of hard work from unforeseen events.'},{title:'Coverage We Provide',list:['Fire & Special Perils — Buildings, machinery, stock against fire, lightning, floods, earthquakes.','Marine Cargo Insurance — Goods in transit by sea, air, rail, or road.','Public Liability Insurance — Third-party bodily injury or property damage claims.','Professional Indemnity — For consultants, doctors, architects against negligence claims.','Workmen\'s Compensation — Statutory cover for employee injury or death.','Directors & Officers Liability — Personal liability protection for company leadership.','Cyber Insurance — Data breach, ransomware, and business interruption from cyber events.']},{title:'Tailored Business Solutions',content:'We understand that no two businesses are alike. Our team conducts risk assessments, identifies coverage gaps, and designs multi-layered protection strategies with competitive premiums.'}],features:['Risk assessment & gap analysis','Multi-insurer quotation comparison','Policy wording review','Annual renewal management','Claims advocacy & settlement support','Industry-specific solutions']},
+  'travel-insurance':{name:'Travel Insurance',icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582"/>',tagline:'Travel with confidence. Insure with Faithquest.',heroDesc:'International and domestic travel insurance covering medical emergencies, trip cancellation, baggage loss, and more.',partners:['ICICI Lombard','Bajaj Allianz General','Tata AIG','HDFC Ergo','Care Health','Star Health'],sections:[{title:'Why Travel Insurance?',content:'Medical treatment abroad can cost lakhs. A single hospitalization in the US or Europe can run into ₹50 lakh or more. Travel insurance covers overseas medical emergencies, evacuation, trip cancellation, passport loss, baggage delay, and personal liability.'},{title:'Plans Available',list:['Individual Travel Plans — Single-trip or multi-trip annual policies.','Family Travel Plans — Cover the entire family under one policy.','Student Travel Insurance — Specialized plans for students studying abroad.','Senior Citizen Travel Plans — Coverage for travelers aged 60+.','Corporate Travel Insurance — Group plans for business travel.','Domestic Travel Insurance — Cover within India including adventure sports.','Schengen Visa Compliant Plans — Mandatory cover for European visa applications.']},{title:'Faithquest Travel Benefits',content:'We help select the right sum insured for your destination, ensure visa compliance (Schengen mandates), and cover pre-existing conditions where possible. Our 24x7 emergency helpline connects you to support worldwide.'}],features:['24x7 global emergency helpline','Visa-compliant documentation','Cashless hospitalization abroad','Trip cancellation protection','Lost baggage coverage','Adventure sports add-ons']},
+  'home-insurance':{name:'Home Insurance',icon:'<path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955a1.126 1.126 0 0 1 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75"/>',tagline:'Your home deserves the best protection.',heroDesc:'Comprehensive home insurance covering structure, contents, valuables, and liability — protecting your most valuable asset.',partners:['ICICI Lombard','HDFC Ergo','Bajaj Allianz General','Tata AIG','New India Assurance','SBI General'],sections:[{title:'Why Home Insurance?',content:'Your home is your largest investment. Home insurance protects the building and contents against fire, natural calamities, burglary, theft, and even terrorism. It also covers temporary living expenses if your home becomes uninhabitable.'},{title:'What\'s Covered',list:['Building Structure — Walls, roof, foundation, fixtures against fire, flood, earthquake.','Home Contents — Furniture, electronics, appliances, clothing, personal belongings.','Valuable Items — Jewellery, art, antiques with specific floater coverage.','Liability Cover — Third-party injury claims on your property.','Rent for Alternative Accommodation — Living expenses if home becomes uninhabitable.','Burglary & Theft — Cover for forced entry and stolen contents.','Domestic Staff Cover — Workmen\'s compensation for household employees.']},{title:'Faithquest Home Protection',content:'We assess your home\'s replacement value, identify coverage gaps, and recommend the right sum insured for structure and contents. Our team ensures you understand exclusions, deductibles, and claim procedures before purchase.'}],features:['Property valuation guidance','Structure + contents bundling','Natural calamity coverage','Burglary & theft protection','Temporary accommodation benefit','Annual review & sum adjustment']}
+};
+
+const arrowSVG='<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>';
+const starSVG='<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+const checkSVG='<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>';
+
+function buildHomeProducts(){
+  document.getElementById('homeProductGrid').innerHTML=Object.keys(products).map((k,i)=>{
+    const p=products[k];
+    return`<div class="product-card reveal ${i>0?'reveal-delay-'+(i%4):''}" onclick="navigate('${k}')"><div class="product-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">${p.icon}</svg></div><h3>${p.name}</h3><p>${p.tagline}</p><span class="product-link">Learn More ${arrowSVG}</span></div>`;
+  }).join('');
+}
+
+function buildTestimonials(){
+  const t=[
+    {text:'Faithquest helped us find the perfect health plan for our parents. Their claims team was incredible when we needed them most.',initials:'RK',name:'Rahul Kapoor',loc:'Entrepreneur, Delhi'},
+    {text:'As a business owner, I needed reliable coverage across property, liability, and employee health. Faithquest structured everything under one roof.',initials:'PM',name:'Priya Mehta',loc:'CFO, Mumbai'},
+    {text:'I was confused choosing between term plans. The advisor walked me through every detail without pressure. Transparent and genuine.',initials:'AS',name:'Arjun Sharma',loc:'IT Professional, Bangalore'}
+  ];
+  document.getElementById('testimonialsGrid').innerHTML=t.map((x,i)=>`<div class="test-card reveal ${i>0?'reveal-delay-'+i:''}"><div class="test-stars">${starSVG.repeat(5)}</div><div class="test-quote">"</div><p class="test-text">${x.text}</p><div class="test-author"><div class="test-avatar">${x.initials}</div><div class="test-info"><h5>${x.name}</h5><span>${x.loc}</span></div></div></div>`).join('');
+}
+
+function buildProductPage(key){
+  const p=products[key];if(!p)return;
+  document.getElementById('page-product-detail').innerHTML=`
+    <div class="page-header"><div class="container">
+      <div class="page-breadcrumb"><a onclick="navigate('home')">Home</a><span>›</span><a onclick="navigate('home')">Products</a><span>›</span><span class="current">${p.name}</span></div>
+      <h1>${p.name.replace('Insurance','<em>Insurance</em>')}</h1>
+      <p>${p.heroDesc}</p>
+    </div></div>
+    <div class="product-detail"><div class="container"><div class="pd-grid">
+      <div class="pd-content">${p.sections.map(s=>`<h2>${s.title}</h2>${s.content?`<p>${s.content}</p>`:''}${s.list?`<ul>${s.list.map(l=>`<li>${l}</li>`).join('')}</ul>`:''}`).join('')}</div>
+      <div class="pd-sidebar">
+        <div class="pd-quote-box"><h3>Get a ${p.name} Quote</h3><p>Compare plans from top insurers. Our advisors will find the best fit for you.</p><a class="btn-primary" onclick="navigate('contact')" style="width:100%;justify-content:center">Request a Quote ${arrowSVG}</a></div>
+        <div class="pd-partners"><h4>Our ${p.name} Partners</h4><div class="partner-pills">${p.partners.map(x=>`<span class="pp">${x}</span>`).join('')}</div></div>
+        <div class="pd-features-box"><h4>What You Get with Faithquest</h4>${p.features.map(f=>`<div class="pd-feat-item">${checkSVG}<span>${f}</span></div>`).join('')}</div>
+      </div>
+    </div></div></div>
+    <section class="cta-section"><div class="container"><div class="cta-inner">
+      <h2>Ready to Explore ${p.name.replace('Insurance','')} <em>Insurance?</em></h2>
+      <p>Let our experts help you find the right plan. Free consultation, no obligations.</p>
+      <div class="cta-actions"><a class="btn-primary" onclick="navigate('contact')">Get a Free Quote ${arrowSVG}</a><a class="btn-secondary" onclick="navigate('contact')">Schedule a Call</a></div>
+    </div></div></section>`;
+}
+
+function navigate(page){
+  window.scrollTo({top:0,behavior:'instant'});
+  document.querySelectorAll('.page-view').forEach(p=>p.classList.remove('active'));
+  if(products[page]){
+    buildProductPage(page);
+    document.getElementById('page-product-detail').classList.add('active');
+    document.title=products[page].name+' — Faithquest';
+  }else{
+    const el=document.getElementById('page-'+page);
+    if(el)el.classList.add('active');
+    else document.getElementById('page-home').classList.add('active');
+    const t={home:'Faithquest — IRDAI Licensed Corporate Agency',about:'About Us — Faithquest',contact:'Contact — Faithquest',claims:'Claims Assistance — Faithquest'};
+    document.title=t[page]||'Faithquest';
+  }
+  setTimeout(initReveals,100);
+}
+
+function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open')}
+
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>50));
+
+function initReveals(){
+  const r=document.querySelectorAll('.reveal:not(.visible)');
+  const o=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');o.unobserve(x.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  r.forEach(el=>o.observe(el));
+}
+
+// ═══ FORM SUBMISSION ═══
+function submitForm(){
+  const name=document.getElementById('fName').value.trim();
+  const phone=document.getElementById('fPhone').value.trim();
+  const email=document.getElementById('fEmail').value.trim();
+  const type=document.getElementById('fType').value;
+  const city=document.getElementById('fCity').value.trim();
+  const message=document.getElementById('fMessage').value.trim();
+  const errEl=document.getElementById('formError');
+
+  // Clear previous validation
+  document.querySelectorAll('.invalid').forEach(el=>el.classList.remove('invalid'));
+  errEl.style.display='none';
+
+  // Validate required fields
+  let valid=true;
+  if(!name){document.getElementById('fName').classList.add('invalid');valid=false}
+  if(!phone){document.getElementById('fPhone').classList.add('invalid');valid=false}
+  if(!email||!email.includes('@')){document.getElementById('fEmail').classList.add('invalid');valid=false}
+  if(!type){document.getElementById('fType').classList.add('invalid');valid=false}
+
+  if(!valid){
+    errEl.textContent='Please fill in all required fields marked with *.';
+    errEl.style.display='block';
+    return;
+  }
+
+  // Build email
+  const subject=encodeURIComponent('New Insurance Enquiry — '+type+' | '+name);
+  const body=encodeURIComponent(
+    'NEW ENQUIRY FROM FAITHQUEST WEBSITE\n'+
+    '══════════════════════════════════\n\n'+
+    'Name: '+name+'\n'+
+    'Phone: '+phone+'\n'+
+    'Email: '+email+'\n'+
+    'Insurance Type: '+type+'\n'+
+    'City: '+(city||'Not specified')+'\n\n'+
+    'Message:\n'+(message||'No additional message.')+'\n\n'+
+    '══════════════════════════════════\n'+
+    'Submitted via faithquest.in contact form'
+  );
+
+  // Send to both email addresses
+  const mailtoLink='mailto:paramjit@faithquest.in,pankaj@faithquest.in?subject='+subject+'&body='+body;
+  window.open(mailtoLink,'_blank');
+
+  // Show success state
+  document.getElementById('formFields').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+}
+
+function resetForm(){
+  document.getElementById('fName').value='';
+  document.getElementById('fPhone').value='';
+  document.getElementById('fEmail').value='';
+  document.getElementById('fType').value='';
+  document.getElementById('fCity').value='';
+  document.getElementById('fMessage').value='';
+  document.querySelectorAll('.invalid').forEach(el=>el.classList.remove('invalid'));
+  document.getElementById('formError').style.display='none';
+  document.getElementById('formFields').style.display='block';
+  document.getElementById('formSuccess').style.display='none';
+}
+
+// Clear validation styling on input
+document.addEventListener('input',function(e){
+  if(e.target.classList.contains('invalid'))e.target.classList.remove('invalid');
+});
+
+// ═══ INIT ═══
+buildHomeProducts();
+buildTestimonials();
+initReveals();
+</script>
+</body>
+</html>
