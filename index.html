@@ -171,8 +171,8 @@ nav.scrolled{background:rgba(11,29,58,.97);backdrop-filter:blur(20px);padding:14
 .page-header>p,.page-header .container>p{color:rgba(255,255,255,.5);font-size:1.05rem;line-height:1.8;max-width:600px}
 
 .product-detail{padding:80px 0}
-.pd-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:start}
-.pd-content h2{font-family:var(--serif);font-size:1.8rem;font-weight:600;color:var(--navy);margin-bottom:16px;margin-top:40px}
+.pd-grid{display:grid;grid-template-columns:1fr;gap:60px;align-items:start;max-width:800px;margin:0 auto}
+  .pd-content h2{font-family:var(--serif);font-size:1.8rem;font-weight:600;color:var(--navy);margin-bottom:16px;margin-top:40px}
 .pd-content h2:first-child{margin-top:0}
 .pd-content p{color:var(--text-muted);line-height:1.85;margin-bottom:16px;font-size:.95rem}
 .pd-content ul{list-style:none;margin:16px 0 24px}
@@ -543,11 +543,6 @@ function buildProductPage(key){
     </div></div>
     <div class="product-detail"><div class="container"><div class="pd-grid">
       <div class="pd-content">${p.sections.map(s=>`<h2>${s.title}</h2>${s.content?`<p>${s.content}</p>`:''}${s.list?`<ul>${s.list.map(l=>`<li>${l}</li>`).join('')}</ul>`:''}`).join('')}</div>
-      <div class="pd-sidebar">
-        <div class="pd-quote-box"><h3>Get a ${p.name} Quote</h3><p>Compare plans from top insurers. Our advisors will find the best fit for you.</p><a class="btn-primary" onclick="navigate('contact')" style="width:100%;justify-content:center">Request a Quote ${arrowSVG}</a></div>
-        <div class="pd-partners"><h4>Our ${p.name} Partners</h4><div class="partner-pills">${p.partners.map(x=>`<span class="pp">${x}</span>`).join('')}</div></div>
-        <div class="pd-features-box"><h4>What You Get with Faithquest</h4>${p.features.map(f=>`<div class="pd-feat-item">${checkSVG}<span>${f}</span></div>`).join('')}</div>
-      </div>
     </div></div></div>
     <section class="cta-section"><div class="container"><div class="cta-inner">
       <h2>Ready to Explore ${p.name.replace('Insurance','')} <em>Insurance?</em></h2>
