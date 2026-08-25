@@ -393,14 +393,6 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,.06);padding
   </div>
 </div></section>
 
-<section style="padding:100px 0;background:var(--white)"><div class="container">
-  <div class="centered" style="max-width:600px;margin:0 auto 64px">
-    <div class="section-label reveal">Client Stories</div>
-    <h2 class="section-title reveal reveal-delay-1">Trusted by Families<br>Across India</h2>
-  </div>
-  <div class="card-grid cols-3" id="testimonialsGrid"></div>
-</div></section>
-
 <section class="cta-section"><div class="container"><div class="cta-inner reveal">
   <div class="section-label" style="justify-content:center;color:var(--gold)"><span style="width:28px;height:1.5px;background:var(--gold);display:inline-block"></span> Ready to Begin?</div>
   <h2>Your Quest for the Right Coverage <em>Starts Here</em></h2>
@@ -549,14 +541,6 @@ function buildHomeProducts(){
   }).join('');
 }
 
-function buildTestimonials(){
-  const t=[
-    {text:'Faithquest helped us find the perfect health plan for our parents. Their claims team was incredible when we needed them most.',initials:'RK',name:'Rahul Kapoor',loc:'Entrepreneur, Delhi'},
-    {text:'As a business owner, I needed reliable coverage across property, liability, and employee health. Faithquest structured everything under one roof.',initials:'PM',name:'Priya Mehta',loc:'CFO, Mumbai'},
-    {text:'I was confused choosing between term plans. The advisor walked me through every detail without pressure. Transparent and genuine.',initials:'AS',name:'Arjun Sharma',loc:'IT Professional, Bangalore'}
-  ];
-  document.getElementById('testimonialsGrid').innerHTML=t.map((x,i)=>`<div class="test-card reveal ${i>0?'reveal-delay-'+i:''}"><div class="test-stars">${starSVG.repeat(5)}</div><div class="test-quote">"</div><p class="test-text">${x.text}</p><div class="test-author"><div class="test-avatar">${x.initials}</div><div class="test-info"><h5>${x.name}</h5><span>${x.loc}</span></div></div></div>`).join('');
-}
 
 function buildProductPage(key){
   const p=products[key];if(!p)return;
@@ -680,7 +664,6 @@ document.addEventListener('input',function(e){
 
 // ═══ INIT ═══
 buildHomeProducts();
-buildTestimonials();
 initReveals();
 </script>
 </body>
