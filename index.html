@@ -543,12 +543,7 @@ function buildProductPage(key){
     </div></div>
     <div class="product-detail"><div class="container"><div class="pd-grid">
       <div class="pd-content">${p.sections.map(s=>`<h2>${s.title}</h2>${s.content?`<p>${s.content}</p>`:''}${s.list?`<ul>${s.list.map(l=>`<li>${l}</li>`).join('')}</ul>`:''}`).join('')}</div>
-    </div></div></div>
-    <section class="cta-section"><div class="container"><div class="cta-inner">
-      <h2>Ready to Explore ${p.name.replace('Insurance','')} <em>Insurance?</em></h2>
-      <p>Let our experts help you find the right plan. Free consultation, no obligations.</p>
-      <div class="cta-actions"><a class="btn-primary" onclick="navigate('contact')">Get a Free Quote ${arrowSVG}</a><a class="btn-secondary" onclick="navigate('contact')">Schedule a Call</a></div>
-    </div></div></section>`;
+    </div></div></div>;
 }
 
 function navigate(page){
